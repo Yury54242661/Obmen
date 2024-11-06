@@ -52,13 +52,11 @@ window = Tk()
 window.title("Курс обмена валюты к доллару")
 window.geometry("360x180")
 
-Label(text="Выберите код валюты:").pack(padx=10, pady=10)
-
-popular_currencies = ["EUR", "JPY", "GBP", "AUD", "CAD", "CHF", "CNY", "RUB", "KZT", "UZS"]
-
+Label(text="Выберите код валюты:").pack(padx=10, pady=5)
 combobox = ttk.Combobox(values=list(currencies.keys()))
-combobox.pack(padx=10, pady=10)
+combobox.pack(padx=10, pady=5)
 combobox.bind("<<ComboboxSelected>>", update_currency_label)
+
 
 currency_label = ttk.Label()
 currency_label.pack(padx=10, pady=10)
