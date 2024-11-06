@@ -5,6 +5,13 @@ import requests
 import json
 
 
+def update_currency_label(event):
+    # Получаем полное название валюты из словаря и обновляем метку
+    code = combobox.get()
+    name = currencies[code]
+    currency_label.config(text=name)
+
+
 def exchange():
     code = combobox.get()
 
@@ -16,8 +23,8 @@ def exchange():
 
             if code in data['rates']:
                 exchange_rate = data['rates'][code]
-
-                mb.showinfo("Курс обмена", f"Курс к доллару: {exchange_rate:.1f} {code} за 1 доллар")
+                currency_name = currencies[code]
+                mb.showinfo("Курс обмена", f"Курс к доллару: {exchange_rate:.1f} {currency_name} за 1 доллар")
             else:
                 mb.showerror("Ошибка", f"Валюта {code} не найдена")
         except Exception as e:
@@ -25,6 +32,19 @@ def exchange():
 
     else:
         mb.showwarning("Внимание", "Введите код валюты")
+
+# Словарь кодов валют и их полных названий
+currencies = {
+    "EUR": "Евро",
+    "JPY": "Японская йена",
+    "GBP": "Британский фунт стерлингов",
+    "AUD": "Австралийский доллар",
+    "CAD": "Канадский доллар",
+    "CHF": "Швейцарский франк",
+    "CNY": "Китайский юань",
+    "RUB": "Российский рубль",
+    "KZT": "Казахстанский тенге",
+    "UZS": "Узбекский сум"}
 
 
 # Создание графического интерфейса
@@ -36,12 +56,12 @@ Label(text="Выберите код валюты:").pack(padx=10, pady=10)
 
 popular_currencies = ["EUR", "JPY", "GBP", "AUD", "CAD", "CHF", "CNY", "RUB", "KZT", "UZS"]
 
-combobox = ttk.Combobox(values=popular_currencies)
+combobox = ttk.Combobox(values=list(currencies.keys()))
 combobox.pack(padx=10, pady=10)
+combobox.bind("<<ComboboxSelected>>", update_currency_label)
 
-
-# entry = Entry()
-# entry.pack(padx=10, pady=10)
+currency_label = ttk.Label()
+currency_label.pack(padx=10, pady=10)
 
 Button(text="Получить курс обмена к доллару", command=exchange).pack(padx=10, pady=10)
 
